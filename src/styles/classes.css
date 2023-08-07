@@ -1,0 +1,62 @@
+* {
+	box-sizing: border-box;
+}
+.app, input, button {
+	font-size: 20px;
+	font-family: system-ui;
+	font-weight: 800;
+}
+input, button {
+	min-width: 80px;
+}
+button {
+	/* word-wrap: break-word; */
+	/* overflow-wrap: break-word; */
+	word-break: break-all;
+	/* text-overflow: ellipsis; */
+}
+button:active {
+	transform: scale(0.8);
+	transition: 50ms;
+}
+.square {
+	width: 80px;
+	height: 80px;
+}
+.border {
+	border: 2px solid black;
+}
+.border-bottom {
+	border-bottom: 2px solid black;
+}
+.red {
+	color: red;
+}
+.profile {
+	border-radius: 40px;
+}
+.hidden {
+	display: none;
+}
+.grid {
+	display: grid;
+}
+.center-x {
+	justify-content: center;
+}
+.center-y {
+	align-items: center;
+}
+.center {
+	justify-content: center;
+	align-items: center;
+}
+.padding {
+	padding: 10px;
+}
+.row-gap {
+	row-gap: 10px;
+}
+.col-gap {
+	column-gap: 10px;
+}

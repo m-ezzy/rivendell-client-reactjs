@@ -1,0 +1,58 @@
+.content {
+    background-color: rgb(170, 170, 170);
+}
+.content::before {
+    content: '';
+    position: absolute;
+    left: -20vw;
+    top: -10vw;
+    z-index: -1;
+    width: 40vw;
+    height: 40vw;
+    border-radius: 1000px;
+    background-color: rgb(80, 228, 80);
+}
+.content:after {
+    content: '';
+    position: absolute;
+    left: 25vw;
+    top: -30vw;
+    z-index: -1;
+    width: 40vw;
+    height: 40vw;
+    border-radius: 1000px;
+    background-color: rgb(154, 45, 187);
+}
+.conversation-bar::before {
+    content: '';
+    position: absolute;
+    left: 40vw;
+    top: 10vh;
+    z-index: -1;
+    width: 30vw;
+    height: 30vw;
+    border-radius: 1000px;
+    background-color: rgb(238, 55, 213);
+}
+.conversation-bar::after {
+    content: '';
+    position: absolute;
+    left: -10vw;
+    top: 70vh;
+    z-index: -1;
+    width: 80vw;
+    height: 80vw;
+    border-radius: 1000px;
+    background-color: rgb(231, 133, 53);
+}
+.explore-bar, .conversation-bar {
+    background-color: unset;
+}
+.explore-bar div, .conversation-bar > div, div, input, button, label {
+    /* border: 1px solid rgb(255, 255, 255, 0.4); */
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+}
+.explore-bar, .conversation-bar, .profile, .search, .search *, .header, .media-item, .sender, .sender * {
+    border: 1px solid rgb(255, 255, 255, 0.4);
+}
