@@ -1,11 +1,20 @@
-import React from 'react'
+import { useLocation } from "react-router-dom";
+import { Alert } from "react-bootstrap";
+import { useUser } from "../contexts/User"
+import { useChat } from "../contexts/Chat";
 
-function Header({chat_id, user_id, user_name}) {
+export default () => {
+	const { user } = useUser();
+	const { current, conversations } = useChat();
+	// const location = useLocation();
+	// const chatId = location.pathname.split('/')[2];
+	// const conv = conversations[current];
+	// console.log('Header', location.pathname.split('/')[1]);
+	console.log(current);
+
 	return (
-		<div className='border padding grid header'>
-			<img className='square border profile' src="images/profile.jpg" />
-			<div className='grid center-y'>{`chat id ${chat_id} , user id ${user_id} , user name ${user_name}`}</div>
-		</div>
-	)
+		<Alert variant="primary">
+			{current.users[0]._id == user.id ? current.users[1].name : current.users[0].name}
+		</Alert>
+	);
 }
-export default Header

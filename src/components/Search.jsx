@@ -1,29 +1,50 @@
-import React from 'react'
+import { useState, useRef } from 'react';
+import { Container, Row, Col, Button, Form, FormControl } from 'react-bootstrap';
+import { useChat } from '../contexts/Chat';
+import makeRequest from '../utils/makeRequest.js';
 
-function Search({previousChatsData, setPreviousChatsData}) {
-	const refSearch = React.useRef(null)
-	console.log(refSearch.current)
-	//when new state is set, only the component where state is declared and its child components are re-rendered
+export default function Search() {
+	const searchRef = useRef(null);
+	const [ results, setResults ] = useState([]);
+	const { setConversations } = useChat();
 
-	/*function handleChange(e) {
-		setFormData(prev => {
-			return e.target.value
-		})
-	}*/
-	async function handleClick(e) {
-		console.log(refSearch.current.value)
-		if(refSearch.current.value == '') { return }
-		let data = await fetchData('create_chat', {user_name: refSearch.current.value})
-		if(data.chat_id == undefined) { return }
-		setPreviousChatsData(prev => {
-			return [...prev, {chat_id: data.chat_id, user_id: data.user_id, user_name: refSearch.current.value}]
-		})
+	async function handleClick(e, userId) {
+		e.preventDefault();
+		let { data, error } = await makeRequest('/chat/create', { userId: userId });
+		setResults([]);
+		setConversations(prev => [...prev, data.chat]);
+	}
+	async function handleChange(e) {
+		e.preventDefault();
+		if(searchRef.current.value == '') { return; }
+		let { data, error } = await makeRequest('/user/search', { query: searchRef.current.value }); //searchTerm //query
+
+		if(data) {
+			let a = data.users.map((user) => {
+				return (
+					<Container key={user._id}>
+						<Row>
+							<Col>{user.name}</Col>
+							<Col><Button onClick={(e) => handleClick(e, user._id)}>create</Button></Col>
+						</Row>
+					</Container>
+				);
+			});
+			setResults(a);
+		} else if(error) {
+			console.log(error);
+		}
 	}
 	return (
-		<div className='grid border padding col-gap search'>
-			<input className='border' type='text' name='search' ref={refSearch} />
-			<button className='border square' onClick={handleClick}>create chat</button>
-		</div>
-	)
+		<Container>
+			<Row>
+				<Form>
+					<FormControl type='text' name='search' placeholder='type search term here' ref={searchRef} onChange={handleChange} />
+				</Form>
+			</Row>
+			<Row>
+				{results}
+			</Row>
+		</Container>
+	);
 }
-export default Search

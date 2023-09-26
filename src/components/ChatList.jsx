@@ -1,39 +1,26 @@
-import React from 'react'
+import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { Container, Row, ListGroup, ListGroupItem } from 'react-bootstrap';
 
-import ChatItem from './ChatItem'
+import { useUser } from '../contexts/User';
+import { useChat } from '../contexts/Chat';
+import ChatItem from './ChatItem';
+import makeRequest from '../utils/makeRequest';
 
-import socket from '../socket'
+// a chat list is just that, a list of chats. it is not meant to download the chats, but just to display them.
+// the chats are downloaded in chat context
+export default () => {
+	const { user } = useUser();
+	const { conversations } = useChat();
 
-function ChatList({previousChatsData, setPreviousChatsData, current, setCurrent}) {
-	let items = []
-
-	React.useEffect(() => {
-		async function gets() {
-			let data = await fetchData('previous_chats', '')
-			sessionStorage.setItem('previous_chats', JSON.stringify(data))
-
-			data.forEach(d => {
-				console.log('kkkkkkkkkkkkkkkkkkkkkkkkkkkkkk', d)
-				socket.emit('connect-to-chat', {chat_id: d.chat_id})
-			})
-
-			setPreviousChatsData(prev => {
-				return data
-			})
-		}
-		gets()
-	}, [])
-	if (previousChatsData.length) {
-		items = previousChatsData.map(d => {
-			return (
-				<ChatItem key={d.chat_id} chat_id={d.chat_id} user_id={d.user_id} user_name={d.user_name} current={current} setCurrent={setCurrent} />
-			)
-		})
+	let items = [];
+	if(conversations.length) {
+		items = conversations.map(conv => {
+			const user2 = conv.users.find(member => member._id != user.id);
+			return <ChatItem key={conv._id} chatId={conv._id} user={user2} />;
+		});
 	}
 	return (
-		<div className="chat-list">
-			{items}
-		</div>
-	)
+		<ListGroup fluid="sm">{ items }</ListGroup>
+	);
 }
-export default ChatList

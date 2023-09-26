@@ -1,22 +1,24 @@
-import React from 'react'
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { Container, Row, Col, ListGroup, ListGroupItem, Image } from 'react-bootstrap';
+import { useChat } from '../contexts/Chat';
 
-function ChatItem({chat_id, user_id, user_name, current, setCurrent}) {
-	let bgcolor = chat_id == current ? 'selected' : ''
-	// fix this. color doesn't change on select because of glass.css
-
-	function handleClick(e) {
-		let cid = e.target.attributes['data-key'].value
-		if(cid != current) {
-			setCurrent(prev => {
-				return chat_id
-			})
-		}
-	}
+export default ({ chatId, user }) => {
+	const { setCurrent } = useChat();
+	const [isOnline, setIsOnline] = useState(false);
+	const [unread, setUnread] = useState(0);
 	return (
-		<div className={`border-bottom padding grid chat-item ${bgcolor}`} data-key={chat_id} onClick={handleClick}>
-			<img className='square border profile' src="images/profile.jpg" />
-			{`user id ${user_id} , user name ${user_name}`}
-		</div>
-	)
+		<ListGroup.Item>
+			<Link to={`${chatId}`} onClick={ () => setCurrent({ chatId, users: [user] }) }>
+				<Container>
+					<Row>
+						<Col><Image src="/images/vite.svg" /></Col>
+						<Col className='d-flex j-c-left'>{user.name}</Col>
+						{ isOnline ? <Col>online</Col> : <Col>offline</Col> }
+						{ unread > 0 && <Col className="badge badge-primary ml-2">{unread}</Col> }
+					</Row>
+				</Container>
+			</Link>
+		</ListGroup.Item>
+	);
 }
-export default ChatItem

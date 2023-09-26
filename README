@@ -1,0 +1,12 @@
+This is a front-end application which allows users to chat with other users online
+A ReactJS client for rivendell
+
+name   : rivendell-client-reactjs
+author : Murtaza Ezzy
+
+Technologies used :
+Framework  : react.js
+Routing    : react-router-dom
+web socket : socket.io-client
+Bundler    : vite.js
+Styling    : bootstrap, react-bootstrap
